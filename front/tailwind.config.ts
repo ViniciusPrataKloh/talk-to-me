@@ -22,9 +22,14 @@ const config: Config = {
         'gray-600': '#2E2E2E',
         'gray-700': '#212121',
         'gray-800': '#0F0F0F',
+      },
+      gradients: {
+        'background-gradient': ['rgba(0,0,0)', '#434343'],
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss-gradients'),
+  ],
 };
 export default config;
