@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={rubik.className + "h-screen min-h-screen bg-gradient-to-tr from-black to-zinc-900 text-white"}>
+      <body className={rubik.className + "min-h-screen bg-gradient-to-tr from-black to-zinc-900 text-white"}>
         <Header />
 
         <Container>

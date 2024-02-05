@@ -29,7 +29,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="fixed bottom-0 bg-black w-full mb-2">
+    <footer className="fixed bottom-0 bg-black w-full pb-1">
       <div className="grid grid-cols-3 items-center">
 
         <span className="text-xl">{hours}{minutes}</span>
@@ -52,7 +52,7 @@ export default function Footer() {
               className="px-5 py-2 rounded-md cursor-pointer hover:bg-gray-600 bg-gray-700 transition-colors"
               onClick={handlePresentation}
             >
-              {isPresenting ? <ScreenShare size={24} className="text-green-600" /> : <ScreenShare size={24} />}
+              {isPresenting ? <ScreenShare size={24} className="text-green-400" /> : <ScreenShare size={24} />}
             </div>
             <div
               className="px-5 py-2 rounded-md cursor-pointer hover:bg-red-700/90 bg-red-700 transition-colors"

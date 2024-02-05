@@ -1,5 +1,6 @@
 import { SendHorizonal } from "lucide-react";
 import Message from "./message";
+import { useState } from "react";
 
 export default function Chat() {
   return (
