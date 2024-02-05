@@ -8,6 +8,10 @@ export default function Footer() {
   const [videoEnabled, setVideoEnabled] = useState<boolean>(true);
   const [isPresenting, setIsPresenting] = useState<boolean>(false);
 
+  const date = new Date();
+  const hours = date.getHours().toString().padStart(2, '0') + ":";
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+
   function handleMicToggle() {
     setMicEnabled(!micEnabled)
   }
@@ -25,10 +29,10 @@ export default function Footer() {
   }
 
   return (
-    <footer className="fixed bottom-0 bg-black w-full">
+    <footer className="fixed bottom-0 bg-black w-full mb-2">
       <div className="grid grid-cols-3 items-center">
 
-        <span className="text-xl">09:05</span>
+        <span className="text-xl">{hours}{minutes}</span>
 
         <div className="w-full">
           <div className="flex flex-row gap-2">
