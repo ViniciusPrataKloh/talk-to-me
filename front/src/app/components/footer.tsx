@@ -1,6 +1,29 @@
-import { Mic, Video, ScreenShare, Phone } from "lucide-react";
+"use client";
+
+import { Mic, Video, ScreenShare, Phone, MicOff, VideoOff } from "lucide-react";
+import { useState } from "react";
 
 export default function Footer() {
+  const [micEnabled, setMicEnabled] = useState<boolean>(true);
+  const [videoEnabled, setVideoEnabled] = useState<boolean>(true);
+  const [isPresenting, setIsPresenting] = useState<boolean>(false);
+
+  function handleMicToggle() {
+    setMicEnabled(!micEnabled)
+  }
+
+  function handleVideoToggle() {
+    setVideoEnabled(!videoEnabled)
+  }
+
+  function handlePresentation() {
+    setIsPresenting(!isPresenting)
+  }
+
+  function handleExit() {
+
+  }
+
   return (
     <footer className="fixed bottom-0 bg-black w-full">
       <div className="grid grid-cols-3 items-center">
@@ -11,25 +34,25 @@ export default function Footer() {
           <div className="flex flex-row gap-2">
             <div
               className="px-5 py-2 rounded-md cursor-pointer hover:bg-gray-600 bg-gray-700 transition-colors"
-            // onClick={() => { }}
+              onClick={handleMicToggle}
             >
-              <Mic size={24} />
+              {micEnabled ? <Mic size={24} /> : <MicOff size={24} className="text-red-700" />}
             </div>
             <div
               className="px-5 py-2 rounded-md cursor-pointer hover:bg-gray-600 bg-gray-700 transition-colors"
-            // onClick={() => { }}
+              onClick={handleVideoToggle}
             >
-              <Video size={24} />
+              {videoEnabled ? <Video size={24} /> : <VideoOff size={24} className="text-red-600" />}
             </div>
             <div
               className="px-5 py-2 rounded-md cursor-pointer hover:bg-gray-600 bg-gray-700 transition-colors"
-            // onClick={() => { }}
+              onClick={handlePresentation}
             >
-              <ScreenShare size={24} />
+              {isPresenting ? <ScreenShare size={24} className="text-green-600" /> : <ScreenShare size={24} />}
             </div>
             <div
               className="px-5 py-2 rounded-md cursor-pointer hover:bg-red-700/90 bg-red-700 transition-colors"
-            // onClick={() => { }
+              onClick={handleExit}
             >
               <div className="transform rotate-90">
                 <Phone size={24} className="transform rotate-45" />
