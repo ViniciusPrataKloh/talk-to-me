@@ -3,6 +3,7 @@ import { Rubik } from "next/font/google";
 import "./globals.css";
 import Header from "./components/header";
 import Container from "./components/container";
+import { SocketContextProvider } from "@/contexts/socket-context";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
@@ -19,11 +20,14 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={rubik.className + "min-h-screen bg-gradient-to-tr from-black to-zinc-900 text-white"}>
-        <Header />
 
-        <Container>
-          {children}
-        </Container>
+        <SocketContextProvider>
+          <Header />
+
+          <Container>
+            {children}
+          </Container>
+        </SocketContextProvider>
       </body>
     </html>
   );
