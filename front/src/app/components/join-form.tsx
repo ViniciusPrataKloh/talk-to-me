@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import * as zod from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 const joinRoomFormSchema = zod.object({
   name: zod.string(),
@@ -10,13 +11,17 @@ const joinRoomFormSchema = zod.object({
 type joinRoomFormType = zod.infer<typeof joinRoomFormSchema>;
 
 export default function JoinForm() {
-
   const { register, handleSubmit, formState } = useForm<joinRoomFormType>({
     resolver: zodResolver(joinRoomFormSchema)
-  })
+  });
+
+  const router = useRouter();
 
   function onJoinSubmit(data: joinRoomFormType): void {
-    console.log(data);
+    if (data.name && data.name !== '') {
+      localStorage.setItem('username', data.name);
+      router.push(`/room/${data.id}`);
+    }
   }
 
   return (

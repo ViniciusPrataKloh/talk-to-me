@@ -12,21 +12,19 @@ export default function Room({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     socket?.on('connect', () => {
-      console.log('Connected');
-
       socket.emit('subscribe', {
         roomId: params.id,
         socketId: socket.id
       })
     })
-  }, [socket]);
+  }, [socket, params.id]);
 
   return (
     <main className="flex flex-col gap-8 mt-8 justify-between h-screen">
       <div className="flex gap-14 h-[80%] w-full">
         <PlayerGrid />
 
-        <Chat />
+        <Chat roomId={params.id} />
       </div>
 
       <Footer />

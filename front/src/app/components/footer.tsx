@@ -1,12 +1,15 @@
 "use client";
 
 import { Mic, Video, ScreenShare, Phone, MicOff, VideoOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Footer() {
   const [micEnabled, setMicEnabled] = useState<boolean>(true);
   const [videoEnabled, setVideoEnabled] = useState<boolean>(true);
   const [isPresenting, setIsPresenting] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const date = new Date();
   const hours = date.getHours().toString().padStart(2, '0') + ":";
@@ -24,8 +27,10 @@ export default function Footer() {
     setIsPresenting(!isPresenting)
   }
 
-  function handleExit() {
+  function handleExitRoom() {
+    localStorage.clear();
 
+    router.push('/');
   }
 
   return (
@@ -56,7 +61,7 @@ export default function Footer() {
             </div>
             <div
               className="px-5 py-2 rounded-md cursor-pointer hover:bg-red-700/90 bg-red-700 transition-colors"
-              onClick={handleExit}
+              onClick={handleExitRoom}
             >
               <div className="transform rotate-90">
                 <Phone size={24} className="transform rotate-45" />

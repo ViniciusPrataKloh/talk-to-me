@@ -1,6 +1,9 @@
+"use client";
+
 import { useForm } from "react-hook-form";
 import * as zod from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 const createRoomFormSchema = zod.object({
   name: zod.string()
@@ -11,10 +14,15 @@ type createRoomFormType = zod.infer<typeof createRoomFormSchema>;
 export default function CreateForm() {
   const { register, handleSubmit, formState } = useForm<createRoomFormType>({
     resolver: zodResolver(createRoomFormSchema)
-  })
+  });
+
+  const router = useRouter();
 
   function onCreateSubmit(data: createRoomFormType): void {
-    console.log(data);
+    if (data.name && data.name !== '') {
+      localStorage.setItem('username', data.name);
+      router.push(`/room/${Math.random().toString(36).substring(2, 7)}`);
+    }
   }
 
   return (
@@ -26,6 +34,7 @@ export default function CreateForm() {
         type="text"
         className="w-full rounded-lg py-2 px-4 bg-gray-500 text-gray-300"
         placeholder="Seu nome"
+        required
         {...register('name')}
       />
 
