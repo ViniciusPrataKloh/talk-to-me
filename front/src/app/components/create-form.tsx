@@ -21,7 +21,9 @@ export default function CreateForm() {
   function onCreateSubmit(data: createRoomFormType): void {
     if (data.name && data.name !== '') {
       localStorage.setItem('username', data.name);
-      router.push(`/room/${Math.random().toString(36).substring(2, 7)}`);
+
+      const roomId = Math.random().toString(36).substring(2, 7);
+      window.location.href = `/room/${roomId}`;
     }
   }
 

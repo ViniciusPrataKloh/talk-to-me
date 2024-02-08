@@ -20,7 +20,7 @@ export default function JoinForm() {
   function onJoinSubmit(data: joinRoomFormType): void {
     if (data.name && data.name !== '') {
       localStorage.setItem('username', data.name);
-      router.push(`/room/${data.id}`);
+      window.location.href = `/room/${data.id}`;
     }
   }
 
