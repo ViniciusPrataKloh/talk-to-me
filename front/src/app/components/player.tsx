@@ -17,12 +17,12 @@ export default function Player() {
     if (userVideo.current) userVideo.current.srcObject = video;
   }
 
-  initCamera();
+  // initCamera();
 
   return (
     <div className="bg-gray-900 w-full h-full rounded-md p-2 relative">
       <video
-        className="h-full w-full"
+        className="h-full w-full mirror-mode"
         autoPlay
         playsInline
         ref={userVideo}

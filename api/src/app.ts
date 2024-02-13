@@ -23,18 +23,48 @@ class App {
 
     socket.on('subscribe', (data) => {
       console.log(`User connected: ${data.roomId}`);
-      console.log(`User joined to room: ${data.socketId}`);
+      console.log(`User subscribed to room: ${data.socketId}`);
 
       socket.join(data.roomId);
+      socket.join(data.socketId);
 
-      socket.on('chat', (data) => {
-        socket.broadcast.to(data.roomId).emit('chat', {
-          message: 'data.message',
-          username: data.username,
-          time: data.time,
+      const roomsSession = Array.from(socket.rooms);
+
+
+      if (roomsSession.length > 1) {
+        console.log({
+          socketId: socket.id,
+          username: data.username
         });
-      })
-    })
+        socket.to(data.roomId).emit('new user', {
+          socketId: socket.id,
+          username: data.username
+        });
+      }
+    });
+
+    socket.on('new user start', (data) => {
+      console.log('new user start', data);
+      socket.to(data.to).emit('new user start', {
+        sender: data.sender
+      });
+    });
+
+    socket.on('sdp', (data) => {
+      console.log('sdp offer', data);
+      socket.to(data.to).emit('sdp', {
+        description: data.description,
+        sender: data.sender
+      });
+    });
+
+    socket.on('chat', (data) => {
+      socket.broadcast.to(data.roomId).emit('chat', {
+        message: data.message,
+        username: data.username,
+        time: data.time,
+      });
+    });
   }
 
   public listen() {
