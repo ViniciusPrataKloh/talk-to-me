@@ -3,16 +3,23 @@
 import Chat from "@/app/components/chat";
 import Footer from "@/app/components/footer";
 import PlayerGrid from "@/app/components/grid-player";
+import Player from "@/app/components/player";
 import { SocketContext } from "@/contexts/socket-context";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 interface ISDPAnswer {
   sender: string;
   description: RTCSessionDescription;
 }
 
+interface IIceCandidate {
+  candidate: RTCIceCandidate;
+  sender: string;
+}
+
 export default function Room({ params }: { params: { id: string } }) {
 
+  const [remoteStreams, setRemoteStreams] = useState<MediaStream[]>([]);
   const { socket } = useContext(SocketContext);
   const peerConnections = useRef<Record<string, RTCPeerConnection>>({});
 
@@ -41,6 +48,8 @@ export default function Room({ params }: { params: { id: string } }) {
     });
 
     socket?.on('sdp', (data) => handleSDPAnswer(data));
+
+    socket?.on('ice candidate', (data) => handleIceCandidate(data));
   }, [socket, params.id]);
 
   async function handleSDPAnswer(data: ISDPAnswer) {
@@ -69,6 +78,14 @@ export default function Room({ params }: { params: { id: string } }) {
     }
   }
 
+  async function handleIceCandidate(data: IIceCandidate) {
+    const peerConnection = peerConnections.current[data.sender];
+
+    if (data.candidate) {
+      await peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+    }
+  }
+
   async function createPeerConnection(socketId: string, createOffer: boolean) {
     console.log("Creating peerConnection with:", socketId);
     const config = {
@@ -89,7 +106,7 @@ export default function Room({ params }: { params: { id: string } }) {
       const offer = await peerConnection.createOffer();
       await peerConnection.setLocalDescription(offer);
 
-      console.log('user creating an offer', offer);
+      console.log('user is creating an offer', offer);
 
       socket?.emit('sdp', {
         to: socketId,
@@ -97,13 +114,37 @@ export default function Room({ params }: { params: { id: string } }) {
         description: peerConnection.localDescription
       });
     }
+
+    const peerConnection = peerConnections.current[socketId];
+
+    peerConnection.ontrack = (event) => {
+      const remoteStream = event.streams[0];
+
+      // setRemoteStreams(...remoteStreams, remoteStream);
+    };
+
+    peer.onicecandidate = (event) => {
+      if (event.candidate) {
+        socket?.emit('ice candidate', {
+          to: socketId,
+          sender: socket.id,
+          candidate: event.candidate
+        })
+      }
+    };
   }
 
   return (
-    <main className="flex flex-col gap-8 mt-8 justify-between h-screen">
-      <div className="flex gap-14 h-[80%] w-full">
-        <PlayerGrid />
-
+    <main className="flex flex-1 flex-col gap-8 mt-8 justify-between h-[calc(100vh-96px-48px)]">
+      {/* <div className="flex gap-14 h-[80%] w-full "> */}
+      <div className="flex flex-row gap-14 h-[95%] w-full rounded-md col-span-3">
+        {/* <PlayerGrid /> */}
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-4 w-full">
+          <Player />
+          <Player />
+          <Player />
+          <Player />
+        </div>
         <Chat roomId={params.id} />
       </div>
 

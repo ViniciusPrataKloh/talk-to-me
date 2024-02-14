@@ -34,7 +34,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="fixed bottom-0 bg-black w-full pb-1">
+    <footer className="fixed bottom-0 bg-black w-full pb-1 h-12">
       <div className="grid grid-cols-3 items-center">
 
         <span className="text-xl">{hours}{minutes}</span>

@@ -3,7 +3,7 @@ import Container from './container';
 
 export default function Header() {
   return (
-    <header className='w-full bg-gray-600 p-4'>
+    <header className='w-full bg-gray-600 p-4 h-24'>
       <Container>
         <div className='flex flex-row items-center justify-between'>
           <Image src='/logo.svg' alt='Logo do Talk to Me' className='' width={150} height={150} />

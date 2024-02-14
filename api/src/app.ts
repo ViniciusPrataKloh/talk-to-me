@@ -53,6 +53,14 @@ class App {
     socket.on('sdp', (data) => {
       console.log('sdp offer', data);
       socket.to(data.to).emit('sdp', {
+        candidate: data.candidate,
+        sender: data.sender
+      });
+    });
+
+    socket.on('ice candidate', (data) => {
+      console.log('ice candidate', data);
+      socket.to(data.to).emit('ice candidate', {
         description: data.description,
         sender: data.sender
       });
